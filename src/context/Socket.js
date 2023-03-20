@@ -1,7 +1,7 @@
 import React from "react";
 import io from "socket.io-client";
 
-const username = JSON.parse(localStorage.getItem("username"));
+const username =  localStorage.getItem("username") != undefined ? JSON.parse( localStorage.getItem("username")) : localStorage.setItem("username", null);
 
 const URL = "http://localhost:9092";
 

@@ -16,12 +16,17 @@ import {
   onlineUserSocket,
   gameInviteSocket,
 } from "./context/Socket";
+
+import { GoogleOAuthProvider } from '@react-oauth/google';
+
+
 import Game from "./pages/Game";
 
 const queryClient = new QueryClient();
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
+  <GoogleOAuthProvider clientId="858546635885-1pi5jt2qovfek5os8cemvb1prmbc23pe.apps.googleusercontent.com">
   <ThemeProviderCustom>
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
@@ -42,6 +47,7 @@ root.render(
       </QueryClientProvider>
     </BrowserRouter>
   </ThemeProviderCustom>
+  </GoogleOAuthProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function

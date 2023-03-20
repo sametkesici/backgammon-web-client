@@ -1,5 +1,5 @@
-import { useRef, useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -15,16 +15,27 @@ import Container from "@mui/material/Container";
 import { useFormik } from "formik";
 import { login } from "../api/axios";
 import Alert from "@mui/material/Alert";
+import { GoogleLogin, useGoogleLogin } from '@react-oauth/google';
 
 import * as Yup from "yup";
+
 import useAuth from "./../hooks/useAuth";
 
 export default function Login() {
   const navigate = useNavigate();
 
   const { auth, setAuth } = useAuth();
-  const [user, setUser] = useState("");
   const [error, setError] = useState("");
+
+
+  const login = useGoogleLogin({
+    redirect_uri: 'http://localhost:8081/api/oauth2/google/login',
+    ux_mode: "redirect",
+    onSuccess: codeResponse => console.log(codeResponse),
+    flow: 'auth-code',
+  });
+  
+
 
   const formik = useFormik({
     initialValues: {
@@ -120,17 +131,30 @@ export default function Login() {
             size="large"
             type="submit"
             variant="contained"
-            sx={{ mt: 3, mb: 2 }}
+            sx={{ mt: 2, mb: 2 }}
           >
             Sign In
           </Button>
+
+          <Button
+            onClick={() => login()}
+            color="primary"
+            disabled={formik.isSubmitting}
+            fullWidth
+            size="large"
+            variant="contained"
+            sx={{ mt: 2, mb: 2 }}
+          >
+            Sign In with Google
+          </Button>
+
           {error ? (
             <Alert sx={{ mt: 2, mb: 3 }} variant="outlined" severity="error">
               {error}
             </Alert>
           ) : null}
 
-          <Grid container>
+          <Grid container sx={{ mt: 1, mb: 2 }}>
             <Grid item xs>
               <Link href="/password/reset" variant="body2">
                 Forgot password?
